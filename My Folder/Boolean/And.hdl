@@ -1,0 +1,9 @@
+/** Outputs AND: Not((Not(X and Y))) */
+CHIP And {
+	IN a,b;
+	OUT AandB;
+	
+	PARTS:
+		Nand(a = a, b = b, out = notAandB);
+		Nand(a = notAandB, b = notAandB, out = AandB);
+}

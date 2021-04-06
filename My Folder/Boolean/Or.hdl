@@ -1,0 +1,10 @@
+/** If either one of input is 1, output 1 */
+CHIP Or{
+	IN x, y;
+	OUT out;
+	
+	PARTS:
+		Nand(a = x, b = x, out = NotX);
+		Nand(a = y, b = y, out = NotY);
+		Nand(a = NotX, b = NotY, out = out);
+}
