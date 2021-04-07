@@ -13,5 +13,14 @@ CHIP Or8Way {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    	Or(a=in[0],b=in[1],out=first);
+    	Or(a=in[2],b=in[3],out=second);
+    	Or(a=in[4],b=in[5],out=third);
+    	Or(a=in[6],b=in[7],out=fourth);
+
+    	Or(a=first, b=second, out = L2F); //L2 stands for layer 2 and F for first
+    	Or(a=third, b=fourth, out = L2S);
+
+    	Or(a=L2F,b=L2S,out=out);
+    	
 }
