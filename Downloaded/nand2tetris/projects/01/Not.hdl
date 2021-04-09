@@ -1,8 +1,8 @@
 /** Outputs Not: Nand(a=a,b=a) if a == 1 output 0 else 1*/
 CHIP Not{
-	IN a;
+	IN in;
 	OUT out;
 	
 	PARTS:
-		Nand(a = a, b = a, out = out);
+		Nand(a = in, b = in, out = out);
 }
