@@ -19,6 +19,11 @@ D=A
 @R0
 M=D
 
+@24576
+D=A
+@R1
+M=D
+
 @temp
 M=-1
 
@@ -42,7 +47,6 @@ D=M
 D = D-M
 @START
 D;JEQ
-
 
 @LOOP
 0;JMP
