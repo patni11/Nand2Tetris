@@ -40,4 +40,43 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+        //A REGISTER
+        Mux16(a=instruction, b=ALUout1, sel=instruction[15],out=Ain);
+        Mux(a=true,b=instruction[5],sel=instruction[15],out=loadA);
+        ARegister(in=Ain,load=loadA,out=Aout1,out[0..14]=addressM);
+
+        //D REGISTER
+        Mux(a=false,b=instruction[4],sel=instruction[15],out=loadD);
+        DRegister(in=ALUout1,load=loadD,out=Dout);
+
+        // A OR M
+        Mux16(a=Aout1, b=inM, sel=instruction[12],out=AMuxout);
+
+        //ALU
+        ALU(x=Dout,y=AMuxout,zx=instruction[11],nx=instruction[10],zy=instruction[9],ny=instruction[8],f=instruction[7],no=instruction[6],out=ALUout1,out=outM,zr=zr,ng=ng,out[15]=ALUout2);
+
+        //WRITE M
+        Mux(a=false,b=true,sel=instruction[3],out=tempwriteM);
+        Mux(a=false,b=tempwriteM,sel=instruction[15],out=writeM);
+
+        // PROGRAM COUNTER
+        //calclulate if jump
+        
+        Or16Way(in=ALUout1,out=JNE);
+        Not(in=JNE,out=JEQ);
+        DMux(in=true,sel=ALUout2,a=JGTtemp,b=JLT);
+        And(a=JGTtemp,b=JNE,out=JGT);
+        Or(a=JGT,b=JEQ,out=JGE);
+        Or(a=JLT,b=JEQ,out=JLE);
+        Mux8Way(a=false,b=JGT,c=JEQ,d=JGE,e=JLT,f=JNE,g=JLE,h=true,sel=instruction[0..2],out=jmptemp);
+        
+        Mux(a=false,b=jmptemp,sel=instruction[15],out=jmp);
+
+        Mux16(a=Aout1,b=false,sel=reset,out=pcin);
+        Mux(a=jmp,b=true,sel=reset,out=pcload);
+
+        PC(in=pcin,load=pcload,inc=true,out[0..14]=pc);
+
+
 }
