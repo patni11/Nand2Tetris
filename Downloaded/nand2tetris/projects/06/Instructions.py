@@ -31,8 +31,12 @@ class Assembly_Binary:
 
     def main(self):
         initial_array = self.input_array
+        self.first_pass(initial_array)
+        self.second_pass(initial_array)
+        
         for each in initial_array:
             instruction = self.AorC(each)
+            
             if instruction == "A":
                 self.final_array.append(self.handle_A_instruction(each))
 
@@ -42,13 +46,30 @@ class Assembly_Binary:
 
                 self.binary_array = []
 
-            elif instruction == "LABEL":
+        return self.final_array
+
+    def first_pass(self,initial_array):
+        counter = 0
+        for each in initial_array:
+            if "(" in each:  
                 string = each.replace('(', "")
                 string = string.replace(')', "")
                 if string not in self.symbols_dict.keys():
-                    self.symbols_dict[string] = len(self.final_array) - 1
+                    self.symbols_dict[string] = counter
+            else:
+                counter += 1
 
-        return self.final_array
+    def second_pass(self,initial_array):
+        for each in initial_array:
+            if "@" in each:
+                new_string = each.replace("@","")
+                try:
+                    number = int(new_string)
+                except:
+                    if new_string not in self.symbols_dict.keys():
+                        self.symbols_dict[new_string] = str(self.variable_counter)
+                        self.variable_counter += 1
+
 
     def handle_C_instruction(self, each):
         self.binary_array = [1, 1, 1]
@@ -92,15 +113,11 @@ class Assembly_Binary:
 
     def handle_A_instruction(self, each):
         if isinstance(each, str):
-            new_string = each.replace('@', '')
-            try:
-                number = int(new_string)
-            except:
-                if new_string not in self.symbols_dict.keys():
-                    self.symbols_dict[new_string] = str(self.variable_counter)
-                    self.variable_counter += 1
-
-                number = int(self.symbols_dict[new_string])
+            new_str = each.replace('@', '')
+            if new_str in self.symbols_dict.keys():
+                number = int(self.symbols_dict[new_str])
+            else:
+                number = int(new_str)
 
         self.convert_to_binary(number)
 
@@ -129,6 +146,6 @@ class Assembly_Binary:
         if each[0] == "@":
             return "A"
         elif each[0] == "(":
-            return "LABEL"
+            return "IGNORE"
         else:
             return "C"
