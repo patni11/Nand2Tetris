@@ -1,3 +1,9 @@
+# PARSER TO CLEAN THE FILE
+
+"""
+THIS FILE HAS A LOT OF REDUNDANT CODE, BUT I LEFT IT THAT WAY
+
+"""
 class Parser:
 
     def __init__(self, path):
@@ -17,6 +23,7 @@ class Parser:
             final_array = self.clearN(final_array)
             return final_array
 
+    #GET RID OF \N AND EMPTY ARRAYS
     def clearN(self, final):
         final_array = []
         for i in final:
@@ -27,6 +34,7 @@ class Parser:
 
         return final_array
 
+    #REMOVE WHITE SPACES
     def remove_white_spaces(self, each):
         array = []
         for i in each:
@@ -36,7 +44,8 @@ class Parser:
                     i = i.strip("\n")
                 array.append(i)
         return array
-
+    
+    #REMOVE COMMENTS
     def remove_comments(self, each):
         removed_array = []
         for i in each.split(' '):
