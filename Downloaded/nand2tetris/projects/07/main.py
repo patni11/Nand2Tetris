@@ -34,6 +34,7 @@ print(parsed_array)
 # Step2 This will create array of binary values
 binary_array = step2(parsed_array)
 print(binary_array)
+print(len(binary_array))
 
 
 """
